@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: infrarecord-frontend
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/joemacibi/InfraRecord.git
+    targetRevision: HEAD
+    path: gitops/manifests/frontend
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: infrarecord
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
